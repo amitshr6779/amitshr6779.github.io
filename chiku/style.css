@@ -42,16 +42,15 @@ body {
     filter: drop-shadow(0 2px 12px #0007);
     height: auto;
   }
-  .photo {
-    width: 300px;       /* Increased size */
-    max-width: 90vw;
-    height: auto;
-    border-radius: 50%;
-    border: 6px solid #fff;
-    object-fit: cover;
-    box-shadow: 0 8px 24px #00000060;
-    margin-bottom: 20px;
-  }
+    .photo{
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      border:6px solid #fff;
+      object-fit:cover;
+      box-shadow:0 8px 24px #00000060;
+      margin-bottom:20px;
+    }
   h1 {
     font-size: 3em;
     margin: 0;
