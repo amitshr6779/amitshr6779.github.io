@@ -33,24 +33,5 @@ You can verify that your AKS cluster is accessible by running:
 ```bash
 kubectl get nodes
 
-Step 1 — Enable Application Gateway Ingress Controller
-
-The first step is to enable the Application Gateway Ingress Controller (AGIC) for the AKS cluster.
-
-This can be done directly from the Azure Portal.
-
-Steps
-
-Navigate to the Azure Portal.
-
-Open your AKS Cluster.
-
-In the left menu, select Networking.
-
-Inside the Networking section, locate Application Gateway Ingress.
-
-Click Enable Application Gateway Ingress.
-
-Once enabled, Azure will automatically deploy the Application Gateway Ingress Controller (AGIC) into the Kubernetes cluster.
-
-This controller allows Azure Application Gateway to act as an ingress controller for Kubernetes workloads.
+```
+h
