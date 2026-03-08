@@ -43,14 +43,27 @@ using HTTPS.
 
 # Architecture Overview
 
-User ↓ DNS (test.yourdomain.com) ↓ Azure Application Gateway ↓
-Application Gateway Ingress Controller (AGIC) ↓ Kubernetes Service ↓
+User 
+↓
+DNS (test.yourdomain.com) 
+↓
+Azure Application Gateway 
+↓
+Application Gateway Ingress Controller (AGIC) 
+↓
+Kubernetes Service 
+↓
 NGINX Pod
 
 For HTTPS certificate issuance:
 
-cert-manager ↓ Let's Encrypt ↓ TLS Certificate ↓ Application Gateway
-HTTPS Listener
+cert-manager 
+↓ 
+Let's Encrypt 
+↓
+TLS Certificate 
+↓ 
+Application Gateway HTTPS Listener
 
 ------------------------------------------------------------------------
 
@@ -68,7 +81,9 @@ satisfied.
 
 Verify cluster connectivity:
 
+'''
 kubectl get nodes
+'''
 
 ------------------------------------------------------------------------
 
