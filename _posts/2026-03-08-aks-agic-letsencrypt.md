@@ -1,18 +1,9 @@
 ---
-categories:
-- Azure
-- Kubernetes
-- DevOps
-date: 2026-03-08
 layout: post
-tags:
-- AKS
-- AGIC
-- Application Gateway
-- Ingress
-- cert-manager
-- LetsEncrypt
-title: Secure AKS Ingress using Application Gateway and Let's Encrypt
+title: "Secure AKS Ingress using Application Gateway and Let's Encrypt"
+date: 2026-03-08
+categories: [Azure, Kubernetes, DevOps]
+tags: [AKS, AGIC, cert-manager, LetsEncrypt]
 ---
 
 # Secure AKS Ingress using Application Gateway and Let's Encrypt
@@ -81,9 +72,9 @@ satisfied.
 
 Verify cluster connectivity:
 
-'''
+```
 kubectl get nodes
-'''
+```
 
 ------------------------------------------------------------------------
 
@@ -102,15 +93,15 @@ Steps:
 
 Azure will automatically deploy the AGIC controller inside the AKS
 cluster.
+<img width="826" height="479" alt="Screenshot from 2026-03-08 17-11-13" src="https://github.com/user-attachments/assets/a548d4ba-d7a6-45f6-846d-2732588c0b7d" />
 
-(Screenshot placeholder here)
 
 ------------------------------------------------------------------------
 
 # Step 2 --- Verify AGIC Controller
-
+```
 kubectl get pods -n kube-system
-
+```
 Expected output:
 
 ingress-appgw-xxxxx Running
@@ -120,25 +111,49 @@ ingress-appgw-xxxxx Running
 # Step 3 --- Deploy Demo NGINX Application
 
 Create nginx-deployment.yaml
-
-apiVersion: apps/v1 kind: Deployment metadata: name: nginx-demo spec:
-replicas: 1 selector: matchLabels: app: nginx-demo template: metadata:
-labels: app: nginx-demo spec: containers: - name: nginx image: nginx
-ports: - containerPort: 80
-
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-demo
+  template:
+    metadata:
+      labels:
+        app: nginx-demo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+```
 Apply:
 
+```
 kubectl apply -f nginx-deployment.yaml
-
+```
 ------------------------------------------------------------------------
 
 # Step 4 --- Create Kubernetes Service
 
 service.yaml
-
-apiVersion: v1 kind: Service metadata: name: nginx-demo-service spec:
-selector: app: nginx-demo ports: - port: 80 targetPort: 80
-
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-demo-service
+spec:
+  selector:
+    app: nginx-demo
+  ports:
+  - port: 80
+    targetPort: 80
+```
 Apply:
 
 kubectl apply -f service.yaml
