@@ -43,27 +43,27 @@ using HTTPS.
 
 # Architecture Overview
 
-User 
-↓
-DNS (test.yourdomain.com) 
-↓
-Azure Application Gateway 
-↓
-Application Gateway Ingress Controller (AGIC) 
-↓
-Kubernetes Service 
-↓
-NGINX Pod
+```
+cert-manager
+     ↓
+Let's Encrypt
+     ↓
+TLS Certificate
+     ↓
+Application Gateway HTTPS Listener
+```
 
 For HTTPS certificate issuance:
 
+```
 cert-manager 
-↓ 
+    ↓ 
 Let's Encrypt 
-↓
+    ↓
 TLS Certificate 
-↓ 
+    ↓ 
 Application Gateway HTTPS Listener
+```
 
 ------------------------------------------------------------------------
 
