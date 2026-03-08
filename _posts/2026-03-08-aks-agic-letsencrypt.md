@@ -18,3 +18,17 @@ In this tutorial we will configure:
 - Kubernetes Ingress
 - cert-manager
 - Let's Encrypt TLS certificates
+
+  ## Prerequisites
+
+Before starting this tutorial, ensure the following requirement is already met.
+
+- An **Azure Kubernetes Service (AKS) cluster is already created and running**
+- You have access to the **Azure Portal**
+- `kubectl` is configured to access the AKS cluster
+- A domain name (optional, required later for HTTPS configuration)
+
+You can verify that your AKS cluster is accessible by running:
+
+```bash
+kubectl get nodes
