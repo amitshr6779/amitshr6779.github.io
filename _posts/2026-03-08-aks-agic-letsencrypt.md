@@ -35,13 +35,17 @@ using HTTPS.
 # Architecture Overview
 
 ```
-cert-manager
-     ↓
-Let's Encrypt
-     ↓
-TLS Certificate
-     ↓
-Application Gateway HTTPS Listener
+User
+↓
+DNS (test.yourdomain.com)
+↓
+Azure Application Gateway
+↓
+Application Gateway Ingress Controller (AGIC)
+↓
+Kubernetes Service
+↓
+NGINX Pod
 ```
 
 For HTTPS certificate issuance:
@@ -164,13 +168,27 @@ kubectl apply -f service.yaml
 
 ingress.yaml
 
-apiVersion: networking.k8s.io/v1 kind: Ingress metadata: name:
-nginx-demo-ingress annotations: kubernetes.io/ingress.class:
-azure/application-gateway
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-demo-ingress
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
 
-spec: rules: - host: test.yourdomain.com http: paths: - path: /
-pathType: Prefix backend: service: name: nginx-demo-service port:
-number: 80
+spec:
+  rules:
+  - host: test.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-demo-service
+            port:
+              number: 80
+```
 
 Apply:
 
@@ -191,31 +209,53 @@ You should see the NGINX welcome page.
 ------------------------------------------------------------------------
 
 # Step 7 --- Install cert-manager
-
+```
 helm repo add jetstack https://charts.jetstack.io helm repo update
 
 helm install cert-manager jetstack/cert-manager --namespace cert-manager
 --create-namespace --set installCRDs=true
+```
 
 Verify:
-
+```
 kubectl get pods -n cert-manager
-
+```
+Expected output:
+```
+cert-manager
+cert-manager-webhook
+cert-manager-cainjector
+```
 ------------------------------------------------------------------------
 
 # Step 8 --- Create ClusterIssuer
 
 cluster-issuer.yaml
 
-apiVersion: cert-manager.io/v1 kind: ClusterIssuer metadata: name:
-letsencrypt-prod spec: acme: email: your-email@example.com server:
-https://acme-v02.api.letsencrypt.org/directory privateKeySecretRef:
-name: letsencrypt-prod solvers: - http01: ingress: class:
-azure/application-gateway
+```
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: your-email@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class: azure/application-gateway
+```
 
 Apply:
 
 kubectl apply -f cluster-issuer.yaml
+
+Verify:
+
+kubectl get clusterissuer
 
 ------------------------------------------------------------------------
 
@@ -223,28 +263,84 @@ kubectl apply -f cluster-issuer.yaml
 
 Add TLS configuration in ingress.
 
-annotations: cert-manager.io/cluster-issuer: letsencrypt-prod
-acme.cert-manager.io/http01-edit-in-place: "true"
-appgw.ingress.kubernetes.io/ssl-redirect: "true"
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-demo-ingress
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+
+spec:
+  tls:
+  - hosts:
+    - test.yourdomain.com
+    secretName: test.yourdomain.com-tls
+
+  rules:
+  - host: test.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-demo-service
+            port:
+              number: 80
+```
 
 ------------------------------------------------------------------------
 
 # Step 10 --- Verify Certificate
-
+```
 kubectl get certificate
-
+```
 Expected:
 
 test.yourdomain.com-tls True
 
+Check secret:
+```
+kubectl get secret test.yourdomain.com-tls
+```
 ------------------------------------------------------------------------
 
 # Step 11 --- Verify HTTPS
 
+Open browser:
+
 https://test.yourdomain.com
 
-Certificate should be issued by Let's Encrypt.
+You should see a secure connection.
 
+Certificate issued by:
+
+Let's Encrypt
+
+# Troubleshooting
+## Certificate not issued
+
+Check:
+```
+kubectl get challenge
+kubectl get orders
+kubectl describe certificate
+```
+## DNS issues
+
+Ensure domain points to Application Gateway IP.
+
+nslookup test.yourdomain.com
+## AGIC issues
+
+Check logs:
+```
+kubectl logs -n kube-system deploy/ingress-appgw
+```
 ------------------------------------------------------------------------
 
 # Conclusion
