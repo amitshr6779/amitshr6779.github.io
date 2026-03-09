@@ -273,6 +273,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     acme.cert-manager.io/http01-edit-in-place: "true"
     appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/acme-challenge-type: http01
 
 spec:
   tls:
