@@ -522,6 +522,11 @@ kubectl -n logging logs -l app.kubernetes.io/name=fluent-bit --tail=20
 ```
 
 ---
+## Kibana Interface
+<img width="1792" height="1043" alt="Screenshot from 2026-03-24 16-24-09" src="https://github.com/user-attachments/assets/c5b6c1f5-01b5-4350-a38f-2802ffa744cf" />
+<img width="1794" height="338" alt="Screenshot from 2026-03-24 16-25-03" src="https://github.com/user-attachments/assets/9552ac9e-7dba-4ec2-a432-d52528c7660d" />
+
+
 
 ## Azure Blob Archival
 
