@@ -1,4 +1,10 @@
-
+---
+layout: post
+title: "EFK Stack on AKS — Production Ready Centralized Logging"
+date: 2026-03-24
+categories: [Azure, Kubernetes, DevOps, Observability]
+tags: [AKS, EFK, Elasticsearch, Fluent Bit, Kibana, ECK, Logging, ILM, Azure Blob]
+---
 
 # EFK Stack on AKS — Production Ready Setup
 
@@ -1126,3 +1132,7 @@ kubectl top pods -n logging
 ```
 
 ---
+
+## License
+
+MIT
