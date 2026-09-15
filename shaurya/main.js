@@ -87,7 +87,7 @@ window.addEventListener('pageshow', ()=>{ tryPlay(); });
 
 // Birthday Counter Logic
 const counter = document.getElementById('counter');
-const bDate = new Date(2025, 8, 16); // Month is 0-based!
+const bDate = new Date(2024, 8, 16); // Month is 0-based!
 const now = new Date();
 let yearDiff = now.getFullYear() - bDate.getFullYear();
 let hasHadBirthday = (now.getMonth() > 8 || (now.getMonth() === 8 && now.getDate() >= 16));
