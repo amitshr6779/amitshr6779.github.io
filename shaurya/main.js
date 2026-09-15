@@ -109,7 +109,7 @@ if(name){
 
 // === Slideshow for the .photo image ===
 const slideshowImages = [
-  "./chiku01.jpeg",
+  "./chiku001.png",
   "./chiku6.jpeg",
   "./chiku5.jpeg",
   "./chiku7.jpeg",
